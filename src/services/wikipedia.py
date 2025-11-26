@@ -25,10 +25,9 @@ class WikipediaService:
         soup = BeautifulSoup(response.text, "html.parser")
         books: list[dict] = []
 
-        # Parser les sections Novels, Collections et Nonfiction
+        # Parser les sections Novels et Collections (pas Nonfiction = essais)
         books.extend(self._parse_section(soup, "Novels"))
         books.extend(self._parse_section(soup, "Collections"))
-        books.extend(self._parse_section(soup, "Nonfiction"))
 
         print(f"   {len(books)} livres trouvés sur Wikipedia.")
         return books

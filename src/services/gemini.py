@@ -125,7 +125,7 @@ class GeminiService:
 
         TÂCHES :
         1. Trouver le titre français officiel (Titre_VF)
-        2. Trouver l'année de première publication en France (Annee_FR, 0 si inconnu ou pas traduit)
+        2. Trouver l'année de première publication PAPIER en France (Annee_FR, 0 si pas de version papier)
         3. Écrire un résumé court (20 mots max)
         4. Classer dans la bonne catégorie
 
@@ -137,16 +137,23 @@ class GeminiService:
         - "Richard Bachman" : publiés sous ce pseudonyme (Rage, The Long Walk, Roadwork, Running Man, Thinner, Blaze, etc.)
         - "Recueils de nouvelles" : collections de nouvelles (Night Shift, Skeleton Crew, etc.)
 
-        DÉTECTION DOUBLON - Is_Duplicate_or_Ignore = TRUE si :
-        - Le TITRE FRANÇAIS que tu vas traduire existe DÉJÀ dans la liste ci-dessous
-        - Exemple : "The Stand: Complete & Uncut" → "Le Fléau" → Si "Le Fléau" existe → DOUBLON
-        - C'est une réédition, édition illustrée, director's cut, version longue
-        - Le livre n'a JAMAIS été traduit en français (Annee_FR = 0)
+        IGNORER (Is_Duplicate_or_Ignore = TRUE) si :
+        - Le TITRE FRANÇAIS existe DÉJÀ dans la liste ci-dessous
+        - C'est une réédition, édition illustrée, version longue
+        - Le livre n'a JAMAIS été traduit en français
+        - C'est un LIVRE AUDIO UNIQUEMENT (ex: Drunken Fireworks, Road Rage)
+        - C'est un eBOOK/KINDLE UNIQUEMENT sans version papier (ex: UR, Riding the Bullet, Un visage dans la foule)
+        - C'est une NOUVELLE INDIVIDUELLE déjà publiée dans un recueil :
+          * Riding the Bullet → dans "Tout est fatal"
+          * Blockade Billy → dans "Le Bazar des mauvais rêves"
+          * A Face in the Crowd → ebook uniquement
+          * The Gingerbread Girl, Harvey's Dream, etc. → dans des recueils
+        - C'est de la NON-FICTION (essais, mémoires comme On Writing, Danse Macabre)
 
         TITRES DÉJÀ EN BASE (VO et VF mélangés) :
         {', '.join(existing_titles)}
 
-        IMPORTANT : Vérifie bien que le titre FR n'existe pas déjà avant de dire Is_Duplicate_or_Ignore = false !
+        IMPORTANT : Je ne veux QUE des livres publiés en FORMAT PAPIER en France !
 
         Retourne le JSON.
         """
